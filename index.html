@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Columbia Solar | D.C.'s Local Solar Experts</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        :root {
+            --capital-blue: #004AAD;
+            --solar-gold: #FFC72C;
+            --district-green: #00A651;
+            --monument-gray-text: #2D3748;
+            --light-gray-bg: #F7FAFC;
+            --dark-bg: #0A101E;
+            --dark-bg-secondary: #10162A;
+            --text-light: #E0E0E0;
+            --text-primary: #FFFFFF;
+            --glow-color-gold: rgba(255, 199, 44, 0.7);
+            --glow-color-blue: rgba(0, 74, 173, 0.6);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            font-family: 'Lato', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            cursor: none;
+        }
+        
+        .cursor-dot, .cursor-outline {
+            pointer-events: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 9999;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--solar-gold);
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 199, 44, 0.3);
+            transition: all 0.08s ease-out;
+        }
+
+        body:has(a:hover, button:hover, .project-card:hover) .cursor-outline {
+            transform: translate(-50%, -50%) scale(1.5);
+            background-color: rgba(255, 199, 44, 0.5);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        section {
+            padding: 100px 0;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+            text-shadow: 0 0 8px var(--glow-color-blue);
+        }
+        
+        h1 { font-size: 3.5rem; }
+        h2 { font-size: 2.8rem; }
+        h3 { font-size: 1.8rem; }
+        p { margin-bottom: 1rem; }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            font-weight: 600;
+        }
+
+        .section-title span {
+            color: var(--solar-gold);
+            text-shadow: 0 0 10px var(--glow-color-gold);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .btn-primary {
+            background-color: var(--solar-gold);
+            color: var(--monument-gray-text);
+            box-shadow: 0 0 15px var(--glow-color-gold);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px var(--glow-color-gold);
+        }
+
+        .btn-secondary {
+            border-color: var(--solar-gold);
+            color: var(--solar-gold);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--solar-gold);
+            color: var(--monument-gray-text);
+            box-shadow: 0 0 15px var(--glow-color-gold);
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 0;
+            z-index: 1000;
+            transition: background-color 0.3s ease, padding 0.3s ease;
+            background-color: rgba(10, 16, 30, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        header.scrolled {
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--solar-gold);
+            text-shadow: 0 0 8px var(--glow-color-gold);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links li {
+            margin-left: 35px;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--solar-gold);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--solar-gold);
+            text-shadow: 0 0 5px var(--glow-color-gold);
+        }
+        
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+        }
+
+        #hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(rgba(10, 16, 30, 0.8), rgba(10, 16, 30, 0.8)), url('https://images.unsplash.com/photo-1508238102811-a67551473af3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80') no-repeat center center/cover;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero-content h1 {
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px var(--glow-color-blue), 0 0 25px var(--glow-color-blue);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: var(--text-light);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #partners {
+            padding: 30px 0;
+            background-color: var(--dark-bg-secondary);
+        }
+        
+        .partners-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .partners-container span {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+        
+        .partners-container img {
+            height: 40px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            filter: grayscale(100%) brightness(150%);
+        }
+        
+        .partners-container img:hover {
+            opacity: 1;
+        }
+        
+        #services .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .service-card {
+            background-color: var(--dark-bg-secondary);
+            padding: 40px 30px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(0, 74, 173, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 20px var(--glow-color-blue);
+        }
+
+        .service-icon {
+            color: var(--solar-gold);
+            margin-bottom: 20px;
+        }
+        
+        .service-card h3 {
+            margin-bottom: 15px;
+            color: var(--solar-gold);
+        }
+
+        #dc-advantage {
+            background-color: var(--dark-bg-secondary);
+        }
+        
+        .advantage-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .advantage-image-container {
+            position: relative;
+        }
+        
+        .advantage-image {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);
+            z-index: 1;
+        }
+        
+        .advantage-text h2 {
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .stat-item {
+            text-align: left;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--solar-gold);
+            font-family: 'Poppins', sans-serif;
+            text-shadow: 0 0 10px var(--glow-color-gold);
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        #work .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            aspect-ratio: 1/1;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            transition: transform 0.4s ease;
+        }
+        
+        .project-card:hover {
+            transform: scale(1.05);
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .project-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(10, 16, 30, 0.9) 0%, rgba(10, 16, 30, 0) 100%);
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .project-info {
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+        }
+        
+        .project-card:hover .project-info {
+            transform: translateY(0);
+        }
+        
+        .project-info h4 {
+            color: var(--solar-gold);
+            margin-bottom: 5px;
+        }
+        
+        .project-info p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+        
+        #why-dc {
+            background-color: var(--dark-bg-secondary);
+        }
+
+        .why-dc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .why-dc-item {
+            padding: 30px;
+            border: 1px solid rgba(0, 74, 173, 0.3);
+            border-radius: 8px;
+        }
+        
+        .why-dc-item .icon {
+            color: var(--district-green);
+            margin-bottom: 15px;
+        }
+        
+        .why-dc-item h3 {
+            margin-bottom: 10px;
+        }
+        
+        #contact {
+            padding-bottom: 0;
+        }
+        
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            background-color: var(--dark-bg-secondary);
+            padding: 60px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 74, 173, 0.3);
+        }
+
+        .contact-info h2 {
+            margin-bottom: 20px;
+        }
+        
+        .contact-info p {
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--dark-bg);
+            border: 1px solid var(--capital-blue);
+            border-radius: 5px;
+            color: var(--text-light);
+            font-family: 'Lato', sans-serif;
+        }
+        
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--glow-color-blue);
+            border-color: var(--solar-gold);
+        }
+
+        footer {
+            background-color: var(--dark-bg-secondary);
+            padding: 50px 0;
+            margin-top: 100px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .footer-logo span {
+            color: var(--solar-gold);
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links li {
+            margin: 0 15px;
+        }
+        
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--solar-gold);
+        }
+
+        .social-icons {
+            margin-bottom: 20px;
+        }
+        
+        .social-icons a {
+            color: var(--text-light);
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--solar-gold);
+        }
+        
+        .copyright {
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 992px) {
+            h1 { font-size: 2.8rem; }
+            h2 { font-size: 2.2rem; }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100vh;
+                background-color: var(--dark-bg);
+                flex-direction: column;
+                justify-content: center;
+                transition: left 0.5s ease;
+                z-index: 100;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                margin: 20px 0;
+            }
+
+            .nav-links a {
+                font-size: 1.5rem;
+            }
+            
+            .nav-quote-btn {
+                font-size: 1.2rem;
+                padding: 15px 35px;
+                margin-top: 20px;
+            }
+
+            .hamburger {
+                display: block;
+                z-index: 101;
+            }
+            
+            .hamburger .line {
+                width: 30px;
+                height: 3px;
+                background-color: var(--text-primary);
+                margin: 6px 0;
+                transition: all 0.4s ease;
+            }
+            
+            .hamburger.active .line1 {
+                transform: rotate(-45deg) translate(-7px, 7px);
+            }
+            .hamburger.active .line2 {
+                opacity: 0;
+            }
+            .hamburger.active .line3 {
+                transform: rotate(45deg) translate(-7px, -7px);
+            }
+
+            .advantage-content, .contact-wrapper {
+                grid-template-columns: 1fr;
+            }
+            
+            .advantage-image {
+                clip-path: none;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.8rem; }
+            section { padding: 60px 0; }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .stat-item {
+                text-align: center;
+            }
+            
+            .partners-container {
+                flex-direction: column;
+            }
+
+            .contact-wrapper {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <header>
+        <div class="container navbar">
+            <a href="#home" class="logo">New Columbia <span>Solar</span></a>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#why-dc" class="nav-link">Why D.C. Solar?</a></li>
+                <li><a href="#work" class="nav-link">Our Work</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="#contact" class="btn btn-primary nav-quote-btn">Get A Free Quote</a></li>
+            </ul>
+            <div class="hamburger">
+                <div class="line line1"></div>
+                <div class="line line2"></div>
+                <div class="line line3"></div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="home">
+            <div class="container hero-content">
+                <h1 data-aos="fade-down">Go Solar in D.C. with the Local Experts.</h1>
+                <p data-aos="fade-up" data-aos-delay="200">We handle everything, from navigating D.C. incentives to flawless installation, so you can save money and power your community.</p>
+                <a href="#contact" class="btn btn-primary" data-aos="fade-up" data-aos-delay="400">Get My Free Quote</a>
+            </div>
+        </section>
+        
+        <section id="partners">
+            <div class="container partners-container" data-aos="fade-up">
+                <span>Trusted By D.C.'s Leading Organizations:</span>
+                <img src="https://via.placeholder.com/150x50/FFFFFF/0A101E?text=DC+Green+Bank" alt="DC Green Bank Logo">
+                <img src="https://via.placeholder.com/150x50/FFFFFF/0A101E?text=DOEE" alt="DOEE Logo">
+                <img src="https://via.placeholder.com/150x50/FFFFFF/0A101E?text=Solar+For+All" alt="Solar For All Logo">
+            </div>
+        </section>
+
+        <section id="services">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">A Seamless Solar Journey, <span>Tailored for You</span></h2>
+                <div class="services-grid">
+                    <div class="service-card" data-aos="fade-right">
+                        <i data-feather="home" class="service-icon" width="48" height="48"></i>
+                        <h3>Residential Solar</h3>
+                        <p>Cut your energy bills and increase your home's value. We make going solar simple for D.C. homeowners, navigating all local permits and incentives for you.</p>
+                    </div>
+                    <div class="service-card" data-aos="fade-up">
+                        <i data-feather="briefcase" class="service-icon" width="48" height="48"></i>
+                        <h3>Commercial Solar</h3>
+                        <p>Turn your rooftop into a revenue-generating asset. We design and install high-performance solar systems that deliver significant ROI for businesses and properties.</p>
+                    </div>
+                    <div class="service-card" data-aos="fade-left">
+                        <i data-feather="battery-charging" class="service-icon" width="48" height="48"></i>
+                        <h3>Battery Storage</h3>
+                        <p>Gain energy independence and resilience. Our battery storage solutions keep your power on during outages and help you maximize your solar savings.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dc-advantage">
+            <div class="container">
+                <div class="advantage-content">
+                    <div class="advantage-text" data-aos="fade-right">
+                        <h2>The <span>D.C. Advantage</span></h2>
+                        <p>We're not just a solar company; we're your neighbors. Our deep-rooted D.C. expertise means we know exactly how to maximize your savings through local programs like SRECs and Solar for All. We are dedicated to powering our community's sustainable future.</p>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-number" data-target="1500">0</span>+
+                                <p class="stat-label">Installations in the District</p>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" data-target="20">0</span>MW
+                                <p class="stat-label">of Solar Power Installed</p>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" data-target="50">0</span>M
+                                <p class="stat-label">Saved for D.C. Residents</p>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" data-target="100">0</span>%
+                                <p class="stat-label">D.C. Focused & Operated</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="advantage-image-container" data-aos="fade-left">
+                         <img src="https://images.unsplash.com/photo-1599599810694-b5b37304c297?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Solar Panels with Washington DC skyline" class="advantage-image">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="work">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">Powering The District, <span>One Roof At A Time</span></h2>
+                <div class="projects-grid">
+                    <div class="project-card" data-aos="zoom-in">
+                        <img src="https://images.unsplash.com/photo-1620353229232-a531b2c459c2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80" alt="Project 1">
+                        <div class="project-overlay">
+                            <div class="project-info">
+                                <h4>Ward 4 Residence</h4>
+                                <p>Residential Rooftop Installation</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card" data-aos="zoom-in" data-aos-delay="100">
+                        <img src="https://images.unsplash.com/photo-1623862454174-275d311b988f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80" alt="Project 2">
+                        <div class="project-overlay">
+                            <div class="project-info">
+                                <h4>Anacostia Community Center</h4>
+                                <p>Non-Profit & Community Solar</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card" data-aos="zoom-in" data-aos-delay="200">
+                        <img src="https://images.unsplash.com/photo-1558123267-3a1ab9e8354c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80" alt="Project 3">
+                        <div class="project-overlay">
+                            <div class="project-info">
+                                <h4>Georgetown Retail Space</h4>
+                                <p>Commercial Flat Roof System</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="why-dc">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">Unlock D.C.'s Full <span>Solar Potential</span></h2>
+                <div class="why-dc-grid">
+                    <div class="why-dc-item" data-aos="fade-up">
+                        <div class="icon"><i data-feather="dollar-sign" width="36" height="36"></i></div>
+                        <h3>D.C. Incentives Maximized</h3>
+                        <p>We're experts in navigating SRECs, federal tax credits, and local D.C. programs to ensure you get the maximum financial benefit from your system.</p>
+                    </div>
+                     <div class="why-dc-item" data-aos="fade-up" data-aos-delay="100">
+                        <div class="icon"><i data-feather="map-pin" width="36" height="36"></i></div>
+                        <h3>True Local Expertise</h3>
+                        <p>From D.C.'s unique rowhouse architecture to complex permitting, our in-house team handles every local challenge with precision and speed.</p>
+                    </div>
+                     <div class="why-dc-item" data-aos="fade-up" data-aos-delay="200">
+                        <div class="icon"><i data-feather="users" width="36" height="36"></i></div>
+                        <h3>Community & Local Jobs</h3>
+                        <p>Choosing us means investing back into the District. We are committed to local hiring and contributing to D.C.'s renewable energy goals.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="container">
+                <h2 class="section-title" data-aos="fade-up">Ready to Go Solar? <span>Let's Talk.</span></h2>
+                <div class="contact-wrapper" data-aos="fade-up">
+                    <div class="contact-info">
+                        <h3>Get Your Free Solar Assessment</h3>
+                        <p>Fill out the form and one of our D.C. solar specialists will contact you to discuss your property's potential and provide a no-obligation quote.</p>
+                        <p>See how much you can save while powering our city's future.</p>
+                    </div>
+                    <form>
+                        <div class="form-group">
+                            <input type="text" name="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="Your Email" required>
+                        </div>
+                         <div class="form-group">
+                            <input type="text" name="address" placeholder="Property Address in D.C." required>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="message" rows="4" placeholder="Tell us about your project (optional)"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Request My Quote</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <a href="#home" class="footer-logo">New Columbia <span>Solar</span></a>
+            <ul class="footer-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#why-dc">Why D.C. Solar?</a></li>
+                <li><a href="#work">Our Work</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="social-icons">
+                <a href="#"><i data-feather="twitter"></i></a>
+                <a href="#"><i data-feather="facebook"></i></a>
+                <a href="#"><i data-feather="linkedin"></i></a>
+            </div>
+            <p class="copyright">&copy; 2023 New Columbia Solar. All Rights Reserved. Powering the District.</p>
+        </div>
+    </footer>
+    
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Feather Icons
+        feather.replace();
+        
+        // AOS Initialization
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 50,
+        });
+
+        // Custom Cursor
+        const cursorDot = document.querySelector(".cursor-dot");
+        const cursorOutline = document.querySelector(".cursor-outline");
+        window.addEventListener("mousemove", function (e) {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Sticky Header
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Navigation
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        const navLinkItems = document.querySelectorAll('.nav-links a');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+        
+        navLinkItems.forEach(link => {
+            link.addEventListener('click', () => {
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    hamburger.classList.remove('active');
+                }
+            });
+        });
+        
+        // Active Nav Link on Scroll
+        const sections = document.querySelectorAll('section');
+        const navLi = document.querySelectorAll('.nav-links li a');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLi.forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href').includes(current)) {
+                    a.classList.add('active');
+                }
+            });
+        });
+
+        // Animated Counters
+        const statsSection = document.getElementById('dc-advantage');
+        const counters = document.querySelectorAll('.stat-number');
+        let started = false;
+
+        function countUp(entries, observer) {
+            entries.forEach(entry => {
+                if(entry.isIntersecting && !started) {
+                    counters.forEach(counter => {
+                        const target = +counter.getAttribute('data-target');
+                        let count = 0;
+                        const updateCount = () => {
+                            const increment = target / 100;
+                            if (count < target) {
+                                count += increment;
+                                if (counter.dataset.target.includes('M')) {
+                                   counter.innerText = '$' + Math.ceil(count);
+                                } else {
+                                   counter.innerText = Math.ceil(count);
+                                }
+                                setTimeout(updateCount, 20);
+                            } else {
+                                if (counter.dataset.target.includes('M')) {
+                                   counter.innerText = '$' + target;
+                                } else {
+                                   counter.innerText = target;
+                                }
+                            }
+                        };
+                        updateCount();
+                    });
+                    started = true;
+                }
+            });
+        }
+        
+        let observer = new IntersectionObserver(countUp, {
+            root: null,
+            threshold: 0.4,
+        });
+        
+        observer.observe(statsSection);
+
+    </script>
+</body>
+</html>
